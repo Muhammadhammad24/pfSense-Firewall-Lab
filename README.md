@@ -107,8 +107,8 @@ This project documents the **installation and configuration** of **pfSense** in 
 
 ## 👨‍💻 Author
 **[Muhammad Hammad]**  
-🔗 LinkedIn: [Your LinkedIn](https://linkedin.com/in/mhammad24)  
-🔗 GitHub: [Your GitHub](https://github.com/Muhammadhammad24)  
+🔗 LinkedIn: (https://linkedin.com/in/mhammad24)  
+🔗 GitHub: (https://github.com/Muhammadhammad24)  
 
 ---
 
