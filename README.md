@@ -108,10 +108,10 @@ This project documents the **installation and configuration** of **pfSense** in 
 ---
 
 ## 📌 Why This Project Matters
-✅ **Hands-on networking experience** with pfSense and firewall security.  
-✅ **Demonstrates IT support skills** (troubleshooting, network monitoring).  
-✅ **Showcases expertise in virtualization & security**.  
-✅ **Great portfolio project for IT Support, Networking, or System Admin roles**.  
+- This project provides **practical experience** in network security and firewall management using pfSense.
+- It demonstrates **essential IT skills**, including troubleshooting, network monitoring, and system administration.
+- It highlights **proficiency in virtualization and security**, making it a strong addition to a portfolio.
+- Ideal for those pursuing careers in **IT support, networking, or system administration**, showcasing real-world expertise.
 
 ---
 
