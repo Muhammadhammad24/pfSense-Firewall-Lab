@@ -70,18 +70,31 @@ This project documents the **installation and configuration** of **pfSense** in 
 
 ---
 
-## 📷 Screenshots (Placeholder)
-💡 Below are **recommended images** you should include for a complete professional setup:
+## 📷 Screenshots
+💡 Below are **actual images** documenting the pfSense setup process:
 
-- ✅ **pfSense Installation Screen** (pfSense_installer.png)
-- ✅ **Assigning WAN & LAN Interfaces** (assign_interfaces.png)
-- ✅ **pfSense Web Dashboard** (dashboard.png)
-- ✅ **Firewall Rules Configuration** (firewall_rules.png)
-- ✅ **DHCP Server Setup** (dhcp_setup.png)
-- ✅ **VPN Configuration (Optional)** (vpn_config.png)
-- ✅ **Wireshark Packet Analysis** (wireshark_analysis.png)
+### 🖥️ pfSense Installation Screen  
+![pfSense Installation](screenshots/pfSense_installer.png)
 
-📸 You can either **capture these screenshots** from your setup or find **open-source images** to document the process.
+### 🌐 Assigning WAN & LAN Interfaces  
+![Assigning WAN & LAN Interfaces](screenshots/assign_interfaces.png)
+
+### 📊 pfSense Web Dashboard  
+![pfSense Web Dashboard](screenshots/dashboard.png)
+
+### 🔥 Firewall Rules Configuration  
+![Firewall Rules Configuration](screenshots/firewall_rules.png)
+
+### 📡 DHCP Server Setup  
+![DHCP Server Setup](screenshots/dhcp_setup.png)
+
+### 🔒 VPN Configuration (Optional)  
+![VPN Configuration](screenshots/vpn_config.png)
+
+### 🕵️‍♂️ Wireshark Packet Analysis  
+![Wireshark Packet Analysis](screenshots/wireshark_analysis.png)
+
+---
 
 ---
 
