@@ -5,69 +5,63 @@ This project documents the **installation and configuration** of **pfSense** in 
 
 ---
 
-## 📁 Project Structure
 📂 pfSense-Firewall-Lab  
- ├── 📁 docs/  _(Step-by-step installation guide)_  
- ├── 📁 screenshots/  _(Screenshots of the setup)_  
- ├── 📁 config/  _(pfSense backup configuration files)_  
- ├── 🔹 README.md  _(Project description & instructions)_  
- └── 🔹 pfSense-Setup-Guide.md _(Detailed setup guide)_
+ ├── 📁 docs/              # Step-by-step installation guide  
+ ├── 📁 screenshots/       # Screenshots of the setup  
+ ├── 📁 config/            # pfSense backup configuration files  
+ ├── 🔹 README.md          # Project description & instructions  
+ └── 🔹 pfSense-Setup-Guide.md  # Detailed setup guide  
 
 
 ---
 
-## 🛠️ Features & Configurations
-- ✅ Installed **pfSense 2.7.2** in **VirtualBox**  
-- ✅ Configured **WAN & LAN interfaces**  
-- ✅ Set up **firewall rules** (allow/block traffic)  
-- ✅ Enabled **DHCP Server & DNS Resolver**  
-- ✅ Created a **VPN tunnel (OpenVPN)**  
-- ✅ Used **Wireshark & Nmap for troubleshooting**  
-
+🛠️ Features & Configurations
+✔ Installed pfSense 2.7.2 in VirtualBox
+✔ Configured WAN & LAN interfaces
+✔ Set up firewall rules (allow/block traffic)
+✔ Enabled DHCP Server & DNS Resolver
+✔ Created a VPN tunnel (OpenVPN)
+✔ Used Wireshark & Nmap for troubleshooting
 ---
 
-## 🔧 Installation & Configuration Guide
+🔧 Installation & Configuration Guide
+1️⃣ Setting up VirtualBox for pfSense
+Download pfSense ISO from pfSense Official Site
+Create a New Virtual Machine in VirtualBox:
+Type: BSD
+Version: FreeBSD (64-bit)
+Memory: 2GB RAM
+Hard Disk: 10GB (Dynamically allocated)
+Attach the pfSense ISO & Start Installation
+Configure Virtual Network Adapters:
+Adapter 1 (WAN) → NAT
+Adapter 2 (LAN) → Host-Only Adapter
+2️⃣ pfSense Installation Steps
+Boot pfSense from the ISO and start the installation.
+Choose Auto (UFS) as the partition scheme.
+Confirm disk formatting and installation.
+Once installed, remove the ISO and reboot.
+Assign WAN to em0 and LAN to em1.
+Access the pfSense Web GUI at: https://192.168.1.1
+Login Credentials (default):
+Username: admin
+Password: pfsense
+3️⃣ Configuring pfSense Network
+✔ Change admin password & set timezone
+✔ Configure WAN Interface (DHCP for internet access)
+✔ Set LAN Interface with a static IP (e.g., 192.168.1.1/24)
+✔ Enable DHCP Server to assign IPs to LAN clients
+✔ Configure DNS Resolver for name resolution
 
-### 1️⃣ **Setting up VirtualBox for pfSense**
-1. **Download pfSense ISO** from [pfSense Official Site](https://www.pfsense.org/download/)
-2. **Create a New Virtual Machine** in VirtualBox:
-   - **Type**: BSD  
-   - **Version**: FreeBSD (64-bit)  
-   - **Memory**: 2GB RAM  
-   - **Hard Disk**: 10GB (Dynamically allocated)  
-3. **Attach the pfSense ISO** & Start Installation
-4. **Configure Virtual Network Adapters:**
-   - **Adapter 1 (WAN)** → NAT  
-   - **Adapter 2 (LAN)** → Host-Only Adapter  
+4️⃣ Firewall & Security Settings
+✔ Create firewall rules to allow/block specific traffic
+✔ Restrict port access to prevent unauthorized usage
+✔ Enable VPN for remote secure access (Optional: OpenVPN)
 
-### 2️⃣ **pfSense Installation Steps**
-1. **Boot pfSense from the ISO** and start the installation.
-2. Choose **Auto (UFS)** as the partition scheme.
-3. Confirm disk formatting and installation.
-4. Once installed, **remove the ISO and reboot**.
-5. After rebooting, assign **WAN** to em0 and **LAN** to em1.
-6. **Access pfSense Web GUI**: Open a browser and go to https://192.168.1.1.
-7. Login (default credentials):
-   - **Username**: admin
-   - **Password**: pfsense
-
-### 3️⃣ **Configuring pfSense Network**
-- Change **admin password & set timezone**.
-- Configure **WAN Interface** to use DHCP (for internet access).
-- Set up **LAN Interface** with static IP (e.g., 192.168.1.1/24).
-- Configure **DHCP Server** to assign IPs to LAN clients.
-- Enable **DNS Resolver** for name resolution.
-
-### 4️⃣ **Firewall & Security Settings**
-- **Create firewall rules** to allow/block specific traffic.
-- **Limit access to specific ports** to prevent unauthorized use.
-- **Enable VPN for remote secure access** (Optional: OpenVPN).
-
-### 5️⃣ **Troubleshooting & Monitoring**
-- Use **Diagnostics > Ping** in pfSense to test connectivity.
-- Run **Wireshark** to analyze network packets.
-- Use **Nmap** to scan open ports and verify firewall rules.
-
+5️⃣ Troubleshooting & Monitoring
+✔ Use Diagnostics > Ping in pfSense to test connectivity
+✔ Run Wireshark to analyze network packets
+✔ Use Nmap to scan open ports and verify firewall rules
 ---
 
 ## 📷 Screenshots
@@ -113,10 +107,12 @@ This project documents the **installation and configuration** of **pfSense** in 
 
 ---
 
-## 👨‍💻 Author
-**[Muhammad Hammad]**  
-🔗 LinkedIn: (https://linkedin.com/in/mhammad24)  
-🔗 GitHub: (https://github.com/Muhammadhammad24)  
+👨‍💻 About the Author
+🚀 Muhammad Hammad
+🔗 LinkedIn: mhammad24
+🔗 GitHub: Muhammadhammad24
+
+
 
 ---
 
