@@ -1,4 +1,4 @@
-# 🚀 pfSense Firewall Lab Setup (VirtualBox) 
+# pfSense Firewall Lab Setup (VirtualBox) 
 
 ## 📌 Overview
 This project is a **hands-on implementation** of **pfSense**, a powerful open-source firewall, in a **VirtualBox lab environment**. It covers **firewall security, networking, VPN configuration, automation, and security monitoring**—key skills highly valued in **IT, cybersecurity, and network engineering**.
