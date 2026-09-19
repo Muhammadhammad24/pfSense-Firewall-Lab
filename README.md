@@ -32,7 +32,7 @@ flowchart LR
 | Install | pfSense CE on FreeBSD 64-bit, 2 GB RAM, 10 GB disk, UFS | [Installation](docs/pfSense-Installation.md) |
 | Interfaces | WAN on `em0`, LAN on `em1`, default admin credentials rotated at first login | [Installation](docs/pfSense-Installation.md) |
 | DHCP and DNS | ISC DHCP on the LAN scope, DNS Resolver for clients | [Screenshots](#screenshots) |
-| Firewall policy | Anti-lockout rule for the GUI, LAN egress rules for IPv4 and IPv6, WAN default-deny | [Firewall rules](docs/Firewall-Rules.md) · [export](config/Firewall-Rules-Backup.xml) |
+| Firewall policy | Anti-lockout rule for the GUI, LAN egress rules for IPv4 and IPv6, WAN default-deny, plus a hardened egress policy as code | [Firewall rules](docs/Firewall-Rules.md) · [export](config/Firewall-Rules-Backup.xml) · [policy](policy/lab.toml) |
 | Remote access | OpenVPN via the pfSense wizard, per-user client export | [VPN setup](docs/VPN-Setup.md) |
 | Verification | Reachability with `ping`, exposed ports with `nmap` from outside the LAN | [Troubleshooting](docs/Troubleshooting.md) |
 
@@ -47,6 +47,33 @@ flowchart LR
    under _Diagnostics → Backup & Restore_, area **Firewall Rules**.
 
 Step-by-step detail is in [`docs/`](docs).
+
+## Policy as code
+
+The factory LAN rules let every client reach anything on any port. The hardened
+policy in [`policy/lab.toml`](policy/lab.toml) replaces them with explicit
+egress, where every rule is reviewed in a diff:
+
+| # | Action | Protocol | Destination | Port | Purpose |
+| --- | --- | --- | --- | --- | --- |
+| 1 | pass | TCP/UDP | this firewall | 53 | DNS through the pfSense resolver |
+| 2 | pass | UDP | this firewall | 123 | NTP from pfSense |
+| 3–4 | pass | TCP | any | 80, 443 | Web and package updates |
+| 5 | pass | ICMP | any | | Ping and path MTU discovery |
+| 6 | **block + log** | any | any | | Everything else |
+
+[`tools/render_rules.py`](tools/render_rules.py) validates the policy
+(interfaces, actions, protocols, port ranges, required descriptions) and
+renders [`config/hardened-rules.xml`](config/hardened-rules.xml) in pfSense's
+import format. Tracker IDs are derived from rule content, so output is
+deterministic. CI fails if the committed XML drifts from the policy.
+
+```bash
+python tools/render_rules.py policy/lab.toml -o config/hardened-rules.xml
+```
+
+Import it under _Diagnostics → Backup & Restore_, restore area **Firewall
+Rules**. The GUI anti-lockout rule is built into pfSense and stays in place.
 
 ## Rule-set audit
 
@@ -69,10 +96,17 @@ $ python tools/audit_rules.py config/Firewall-Rules-Backup.xml
   INFO   #2 [lan] Default allow LAN IPv6 to any rule: IPv6 traffic is permitted; confirm IPv6 is in use
 ```
 
-CI runs the unit tests and audits the committed export on every push, and
-fails on any high-severity finding (`--fail-on` sets the threshold, and
-`--format json` gives machine-readable output). The medium findings above are
-the next hardening step on the roadmap.
+The medium findings on the factory rules are what the hardened policy fixes:
+
+```console
+$ python tools/audit_rules.py config/hardened-rules.xml --fail-on low
+6 rules, 0 findings
+```
+
+On every push, CI runs the unit tests, audits the lab export for
+high-severity issues, and audits the hardened set at the strictest level.
+`--fail-on` sets the threshold and `--format json` gives machine-readable
+output.
 
 ## Screenshots
 
@@ -106,7 +140,8 @@ the next hardening step on the roadmap.
 ## Roadmap
 
 - [x] Automated audit of the exported rule set in CI
-- [ ] Replace LAN any-to-any with explicit egress rules (DNS, HTTP/S, NTP)
+- [x] Explicit egress policy as code, rendered and audited in CI
+- [ ] Import the hardened rules into the lab VM and verify them with `nmap` from a LAN client
 - [ ] Segment the LAN with VLANs (users, servers, management) and inter-VLAN rules
 - [ ] Suricata IDS on WAN with the ET Open ruleset, alerts to syslog
 - [ ] pfBlockerNG IP and DNS blocklists
@@ -115,10 +150,11 @@ the next hardening step on the roadmap.
 ## Repository layout
 
 ```
-config/        exported firewall rules (sanitised)
+config/        lab rule export (sanitised) and the rendered hardened rule set
+policy/        firewall policy as code (TOML)
 docs/          runbooks: install, rules, VPN, troubleshooting
-tools/         rule-set audit script
-tests/         audit tests, run in CI
+tools/         render_rules.py (policy → pfSense XML), audit_rules.py (policy checks)
+tests/         renderer and audit tests, run in CI
 screenshots/   evidence for each stage of the build
 ```
 
