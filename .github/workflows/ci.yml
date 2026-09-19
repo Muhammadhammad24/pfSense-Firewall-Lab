@@ -1,0 +1,26 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    name: Test and audit firewall rules
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - run: pip install pytest ruff
+      - name: Lint
+        run: ruff check tools tests
+      - name: Unit tests
+        run: pytest -q
+      - name: Audit exported rule set
+        run: python tools/audit_rules.py config/Firewall-Rules-Backup.xml --fail-on high
