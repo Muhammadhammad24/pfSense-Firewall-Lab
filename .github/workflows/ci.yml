@@ -22,5 +22,11 @@ jobs:
         run: ruff check tools tests
       - name: Unit tests
         run: pytest -q
-      - name: Audit exported rule set
+      - name: Audit exported lab rules
         run: python tools/audit_rules.py config/Firewall-Rules-Backup.xml --fail-on high
+      - name: Rendered rules are up to date with the policy
+        run: |
+          python tools/render_rules.py policy/lab.toml -o config/hardened-rules.xml
+          git diff --exit-code config/hardened-rules.xml
+      - name: Audit hardened rules strictly
+        run: python tools/audit_rules.py config/hardened-rules.xml --fail-on low
