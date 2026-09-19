@@ -1,0 +1,49 @@
+# Firewall policy for the lab, rendered to pfSense XML by tools/render_rules.py.
+#
+# Replaces the factory "LAN to any" rules with explicit egress. Anything not
+# listed here falls through to the final block-and-log rule. WAN has no pass
+# rules, so inbound traffic hits pfSense's implicit default deny.
+#
+#   python tools/render_rules.py policy/lab.toml -o config/hardened-rules.xml
+
+[interfaces]
+lan = { subnet = "lan", description = "Host-only client network 192.168.1.0/24" }
+
+[[rule]]
+interface = "lan"
+action = "pass"
+protocol = "tcp/udp"
+destination = "self"
+ports = "53"
+description = "LAN clients resolve DNS through the pfSense resolver"
+
+[[rule]]
+interface = "lan"
+action = "pass"
+protocol = "udp"
+destination = "self"
+ports = "123"
+description = "LAN clients sync time from pfSense"
+
+[[rule]]
+interface = "lan"
+action = "pass"
+protocol = "tcp"
+destination = "any"
+ports = ["80", "443"]
+description = "Web browsing and package updates"
+
+[[rule]]
+interface = "lan"
+action = "pass"
+protocol = "icmp"
+destination = "any"
+description = "Ping and path MTU discovery"
+
+[[rule]]
+interface = "lan"
+action = "block"
+protocol = "any"
+destination = "any"
+log = true
+description = "Default deny: log and drop all other LAN egress"

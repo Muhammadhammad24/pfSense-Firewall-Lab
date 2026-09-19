@@ -1,0 +1,91 @@
+<filter>
+	<rule>
+		<tracker>3442120586</tracker>
+		<type>pass</type>
+		<interface>lan</interface>
+		<ipprotocol>inet</ipprotocol>
+		<protocol>tcp/udp</protocol>
+		<source>
+			<network>lan</network>
+		</source>
+		<destination>
+			<network>(self)</network>
+			<port>53</port>
+		</destination>
+		<descr>LAN clients resolve DNS through the pfSense resolver</descr>
+	</rule>
+	<rule>
+		<tracker>1431815937</tracker>
+		<type>pass</type>
+		<interface>lan</interface>
+		<ipprotocol>inet</ipprotocol>
+		<protocol>udp</protocol>
+		<source>
+			<network>lan</network>
+		</source>
+		<destination>
+			<network>(self)</network>
+			<port>123</port>
+		</destination>
+		<descr>LAN clients sync time from pfSense</descr>
+	</rule>
+	<rule>
+		<tracker>3572830740</tracker>
+		<type>pass</type>
+		<interface>lan</interface>
+		<ipprotocol>inet</ipprotocol>
+		<protocol>tcp</protocol>
+		<source>
+			<network>lan</network>
+		</source>
+		<destination>
+			<any />
+			<port>80</port>
+		</destination>
+		<descr>Web browsing and package updates (80)</descr>
+	</rule>
+	<rule>
+		<tracker>2921839373</tracker>
+		<type>pass</type>
+		<interface>lan</interface>
+		<ipprotocol>inet</ipprotocol>
+		<protocol>tcp</protocol>
+		<source>
+			<network>lan</network>
+		</source>
+		<destination>
+			<any />
+			<port>443</port>
+		</destination>
+		<descr>Web browsing and package updates (443)</descr>
+	</rule>
+	<rule>
+		<tracker>2320697804</tracker>
+		<type>pass</type>
+		<interface>lan</interface>
+		<ipprotocol>inet</ipprotocol>
+		<protocol>icmp</protocol>
+		<icmptype>any</icmptype>
+		<source>
+			<network>lan</network>
+		</source>
+		<destination>
+			<any />
+		</destination>
+		<descr>Ping and path MTU discovery</descr>
+	</rule>
+	<rule>
+		<tracker>3725122984</tracker>
+		<type>block</type>
+		<interface>lan</interface>
+		<ipprotocol>inet</ipprotocol>
+		<source>
+			<network>lan</network>
+		</source>
+		<destination>
+			<any />
+		</destination>
+		<log />
+		<descr>Default deny: log and drop all other LAN egress</descr>
+	</rule>
+</filter>
