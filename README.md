@@ -7,6 +7,7 @@ build can be reproduced from scratch.
 ![pfSense](https://img.shields.io/badge/pfSense-CE-212121?logo=pfsense&logoColor=white)
 ![VirtualBox](https://img.shields.io/badge/VirtualBox-7-183A61?logo=virtualbox&logoColor=white)
 ![FreeBSD](https://img.shields.io/badge/FreeBSD-based-AB2B28?logo=freebsd&logoColor=white)
+[![CI](https://github.com/Muhammadhammad24/pfSense-Firewall-Lab/actions/workflows/ci.yml/badge.svg)](https://github.com/Muhammadhammad24/pfSense-Firewall-Lab/actions/workflows/ci.yml)
 
 ## Topology
 
@@ -47,6 +48,32 @@ flowchart LR
 
 Step-by-step detail is in [`docs/`](docs).
 
+## Rule-set audit
+
+[`tools/audit_rules.py`](tools/audit_rules.py) parses an exported rule set and
+flags policy mistakes before they reach the firewall:
+
+| Severity | Check |
+| --- | --- |
+| high | WAN pass rules from any source to any destination |
+| high | WAN rules that expose management ports (22, 80, 443, 3389, 8080, 8443), including inside port ranges |
+| medium | Any-to-any pass rules on internal interfaces, meaning no egress filtering |
+| low | Rules without a description, and disabled rules left in place |
+| info | IPv6 pass rules, to confirm IPv6 is intended |
+
+```console
+$ python tools/audit_rules.py config/Firewall-Rules-Backup.xml
+2 rules, 3 findings
+  MEDIUM #1 [lan] Default allow LAN to any rule: lan may reach any destination on any port; consider egress filtering
+  MEDIUM #2 [lan] Default allow LAN IPv6 to any rule: lan may reach any destination on any port; consider egress filtering
+  INFO   #2 [lan] Default allow LAN IPv6 to any rule: IPv6 traffic is permitted; confirm IPv6 is in use
+```
+
+CI runs the unit tests and audits the committed export on every push, and
+fails on any high-severity finding (`--fail-on` sets the threshold, and
+`--format json` gives machine-readable output). The medium findings above are
+the next hardening step on the roadmap.
+
 ## Screenshots
 
 | Installer | Interface assignment |
@@ -78,6 +105,8 @@ Step-by-step detail is in [`docs/`](docs).
 
 ## Roadmap
 
+- [x] Automated audit of the exported rule set in CI
+- [ ] Replace LAN any-to-any with explicit egress rules (DNS, HTTP/S, NTP)
 - [ ] Segment the LAN with VLANs (users, servers, management) and inter-VLAN rules
 - [ ] Suricata IDS on WAN with the ET Open ruleset, alerts to syslog
 - [ ] pfBlockerNG IP and DNS blocklists
@@ -88,6 +117,8 @@ Step-by-step detail is in [`docs/`](docs).
 ```
 config/        exported firewall rules (sanitised)
 docs/          runbooks: install, rules, VPN, troubleshooting
+tools/         rule-set audit script
+tests/         audit tests, run in CI
 screenshots/   evidence for each stage of the build
 ```
 
